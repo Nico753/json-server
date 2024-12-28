@@ -1,0 +1,66 @@
+{
+  "Users": [
+    {
+      "id": "53b8",
+      "username": "Admin",
+      "email": "admin@gmail.com",
+      "password": "admin",
+      "country": "Italia",
+      "city": "Barge",
+      "address": "Molini 3"
+    },
+    {
+      "id": "d615",
+      "username": "Italia",
+      "email": "dominici@gmail.com",
+      "password": "awer",
+      "country": "Italia",
+      "city": "eawr",
+      "address": "awer"
+    }
+  ],
+  "Shop": [
+    {
+      "id": "P1",
+      "bestSeller": "true",
+      "name": "Blur Hockey Crewneck Forest",
+      "price": "140.00",
+      "picture": [
+        "../img/Prodotti/P1/thumbnails1.webp",
+        "../img/Prodotti/P1/thumbnails2.webp",
+        "../img/Prodotti/P1/thumbnails3.webp",
+        "../img/Prodotti/P1/thumbnails4.webp",
+        "../img/Prodotti/P1/thumbnails5.webp",
+        "../img/Prodotti/P1/thumbnails6.webp"
+      ],
+      "size": {
+        "Small": "true",
+        "Medium": "false",
+        "Large": "true",
+        "XLarge": "true",
+        "XXLarge": "false"
+      }
+    },
+    {
+      "id": "P2",
+      "bestSeller": "true",
+      "name": "Blur Hockey Crewneck Forest",
+      "price": "140.00",
+      "picture": [
+        "/img/Prodotti/P1/thumbnails1.webp",
+        "/img/Prodotti/P1/thumbnails2.webp",
+        "/img/Prodotti/P1/thumbnails3.webp",
+        "/img/Prodotti/P1/thumbnails4.webp",
+        "/img/Prodotti/P1/thumbnails5.webp",
+        "/img/Prodotti/P1/thumbnails6.webp"
+      ],
+      "size": {
+        "Small": "true",
+        "Medium": "false",
+        "Large": "true",
+        "XLarge": "true",
+        "XXLarge": "false"
+      }
+    }
+  ]
+}
