@@ -7,7 +7,9 @@
       "password": "admin",
       "country": "Italia",
       "city": "Barge",
-      "address": "Molini 3"
+      "address": "Molini 3",
+      "shoppingCart": [
+      ]
     },
     {
       "id": "d615",
@@ -16,7 +18,9 @@
       "password": "awer",
       "country": "Italia",
       "city": "eawr",
-      "address": "awer"
+      "address": "awer",
+      "shoppingCart": [
+      ]
     }
   ],
   "Shop": [
@@ -33,13 +37,13 @@
         "../img/Prodotti/P1/thumbnails5.webp",
         "../img/Prodotti/P1/thumbnails6.webp"
       ],
-      "size": {
-        "Small": "true",
-        "Medium": "false",
-        "Large": "true",
-        "XLarge": "true",
-        "XXLarge": "false"
-      }
+      "size": [
+        "true",
+        "false",
+        "true",
+        "true",
+        "false"
+      ]
     },
     {
       "id": "P2",
@@ -47,20 +51,20 @@
       "name": "Blur Hockey Crewneck Forest",
       "price": "140.00",
       "picture": [
-        "/img/Prodotti/P1/thumbnails1.webp",
-        "/img/Prodotti/P1/thumbnails2.webp",
-        "/img/Prodotti/P1/thumbnails3.webp",
-        "/img/Prodotti/P1/thumbnails4.webp",
-        "/img/Prodotti/P1/thumbnails5.webp",
-        "/img/Prodotti/P1/thumbnails6.webp"
+        "../img/Prodotti/P1/thumbnails1.webp",
+        "../img/Prodotti/P1/thumbnails2.webp",
+        "../img/Prodotti/P1/thumbnails3.webp",
+        "../img/Prodotti/P1/thumbnails4.webp",
+        "../img/Prodotti/P1/thumbnails5.webp",
+        "../img/Prodotti/P1/thumbnails6.webp"
       ],
-      "size": {
-        "Small": "true",
-        "Medium": "false",
-        "Large": "true",
-        "XLarge": "true",
-        "XXLarge": "false"
-      }
+      "size": [
+        "true",
+        "false",
+        "true",
+        "true",
+        "false"
+      ]
     }
   ]
 }
