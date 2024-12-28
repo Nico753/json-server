@@ -8,8 +8,13 @@ const PORT = 3000;
 // Middleware per il parsing del corpo delle richieste POST
 app.use(express.json());
 
-// Abilita CORS per tutte le richieste
-app.use(cors());
+// Abilita CORS per richieste provenienti da un dominio specifico
+const corsOptions = {
+  origin: 'http://127.0.0.1:5500',  // Permetti solo le richieste da questo dominio
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+};
+app.use(cors(corsOptions));
 
 // Percorso del file JSON
 const jsonFilePath = path.join(__dirname, 'data.json');
@@ -23,7 +28,7 @@ app.get('/', (req, res) => {
       </head>
       <body>
         <h1>Benvenuto nel nostro server!</h1>
-        <p>Accedi a /data per vedere i dati o a /add-to-cart/:userName per aggiungere un prodotto al carrello.</p>
+        <p>Accedi a /data per vedere i dati o a /add-to-cart/:userId per aggiungere un prodotto al carrello.</p>
         <p>Accedi a /add-user per aggiungere un nuovo utente al sistema.</p>
       </body>
     </html>
@@ -41,8 +46,8 @@ app.get('/data', (req, res) => {
 });
 
 // Endpoint POST per aggiungere un prodotto al carrello di un utente
-app.post('/add-to-cart/:userName', (req, res) => {
-  const userName = req.params.userName; // Nome dell'utente a cui aggiungere il prodotto
+app.post('/add-to-cart/:userId', (req, res) => {
+  const userId = req.params.userId; // ID dell'utente a cui aggiungere il prodotto
   const product = req.body; // Dettagli del prodotto da aggiungere
 
   fs.readFile(jsonFilePath, 'utf8', (err, data) => {
@@ -52,8 +57,8 @@ app.post('/add-to-cart/:userName', (req, res) => {
 
     const currentData = JSON.parse(data); // Converte il contenuto del file in oggetto JSON
 
-    // Trova l'utente con il nome specificato
-    const user = currentData.Users.find(u => u.name === userName);
+    // Trova l'utente con l'ID specificato
+    const user = currentData.Users.find(u => u.id === userId);
     
     if (!user) {
       return res.status(404).json({ error: 'Utente non trovato' });
@@ -88,14 +93,7 @@ app.post('/add-user', (req, res) => {
 
     const currentData = JSON.parse(data); // Converte il contenuto del file in oggetto JSON
 
-    // Verifica che l'utente non esista già
-    const existingUser = currentData.Users.find(u => u.name === newUser.name);
-    if (existingUser) {
-      return res.status(400).json({ error: 'Utente già esistente' });
-    }
-
     // Aggiungi il nuovo utente all'array Users
-    newUser.shoppingCart = [];  // Aggiungi un carrello vuoto per il nuovo utente
     currentData.Users.push(newUser);
 
     // Scrivi i dati aggiornati nel file JSON
@@ -111,5 +109,4 @@ app.post('/add-user', (req, res) => {
 // Avvia il server
 app.listen(PORT, () => {
   console.log(`Server in esecuzione sulla porta ${PORT}`);
-  console.log(`Visita http://localhost:${PORT}/ per la home page`);
 });
