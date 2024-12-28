@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
       <body>
         <h1>Benvenuto nel nostro server!</h1>
         <p>Accedi a /data per vedere i dati o a /add-to-cart/:userId per aggiungere un prodotto al carrello.</p>
+        <p>Accedi a /add-user per aggiungere un nuovo utente al sistema.</p>
       </body>
     </html>
   `);
@@ -67,6 +68,30 @@ app.post('/add-to-cart/:userId', (req, res) => {
         return res.status(500).json({ error: 'Errore nella scrittura del file' });
       }
       res.status(200).json({ message: 'Prodotto aggiunto al carrello', shoppingCart: user.shoppingCart });
+    });
+  });
+});
+
+// Endpoint POST per aggiungere un nuovo utente
+app.post('/add-user', (req, res) => {
+  const newUser = req.body; // Ottieni i dati del nuovo utente dalla richiesta
+
+  fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Errore nella lettura del file' });
+    }
+
+    const currentData = JSON.parse(data); // Converte il contenuto del file in oggetto JSON
+
+    // Aggiungi il nuovo utente all'array Users
+    currentData.Users.push(newUser);
+
+    // Scrivi i dati aggiornati nel file JSON
+    fs.writeFile(jsonFilePath, JSON.stringify(currentData, null, 2), 'utf8', (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Errore nella scrittura del file' });
+      }
+      res.status(200).json({ message: 'Nuovo utente aggiunto', newUser: newUser });
     });
   });
 });
