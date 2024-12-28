@@ -3,34 +3,59 @@
 import fs from 'fs';
 import path from 'path';
 
-let data = {
-  "nome": "John Doe",
-  "email": "johndoe@example.com",
-  "data_nascita": "1990-01-01"
+const filePath = path.join(process.cwd(), 'data.json');  // Percorso del file data.json
+
+// Funzione per leggere i dati da data.json
+const readData = () => {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');  // Legge il file JSON
+    return JSON.parse(data);  // Converte il contenuto in un oggetto JavaScript
+  } catch (error) {
+    console.error('Errore durante la lettura del file:', error);
+    return {};  // Ritorna un oggetto vuoto in caso di errore
+  }
+};
+
+// Funzione per scrivere i dati su data.json
+const writeData = (data) => {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));  // Scrive nel file in formato JSON
+  } catch (error) {
+    console.error('Errore durante la scrittura del file:', error);
+  }
 };
 
 export default function handler(req, res) {
   if (req.method === 'GET') {
-    // Gestisce la richiesta GET - Restituisce il contenuto del file JSON
+    // Legge i dati da data.json e restituisce come risposta
+    const data = readData();
     res.status(200).json(data);
   } else if (req.method === 'POST') {
-    // Gestisce la richiesta POST - Aggiunge dati al JSON (modifica del JSON)
+    // Gestisce la richiesta POST - Aggiunge i dati al file JSON
     let body = '';
     
-    // Raccoglie i dati inviati nel corpo della richiesta
     req.on('data', chunk => {
       body += chunk;
     });
 
     req.on('end', () => {
-      // Parsea i dati ricevuti
-      const newData = JSON.parse(body);
+      try {
+        const newData = JSON.parse(body);  // Parsea i dati inviati
 
-      // Aggiunge i nuovi dati al nostro oggetto
-      data = { ...data, ...newData };
+        // Legge i dati correnti da data.json
+        let data = readData();
 
-      // Risponde con il nuovo oggetto JSON
-      res.status(200).json(data);
+        // Unisce i nuovi dati con quelli esistenti
+        data = { ...data, ...newData };
+
+        // Scrive i dati aggiornati nel file data.json
+        writeData(data);
+
+        // Risponde con il nuovo oggetto JSON
+        res.status(200).json(data);
+      } catch (error) {
+        res.status(400).json({ error: 'Dati non validi o errore nel parsing' });
+      }
     });
   } else {
     // Se il metodo HTTP non è né GET né POST, restituisci un errore
