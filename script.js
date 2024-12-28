@@ -8,13 +8,8 @@ const PORT = 3000;
 // Middleware per il parsing del corpo delle richieste POST
 app.use(express.json());
 
-// Abilita CORS per richieste provenienti da un dominio specifico
-const corsOptions = {
-  origin: 'http://127.0.0.1:5500',  // Permetti solo le richieste da questo dominio
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type']
-};
-app.use(cors(corsOptions));
+// Abilita CORS per tutte le richieste
+app.use(cors());
 
 // Percorso del file JSON
 const jsonFilePath = path.join(__dirname, 'data.json');
@@ -82,7 +77,7 @@ app.post('/add-user', (req, res) => {
   const newUser = req.body; // Ottieni i dati del nuovo utente dalla richiesta
 
   // Verifica che i dati dell'utente siano completi
-  if (!newUser || !newUser.name) {
+  if (!newUser || !newUser.username || !newUser.email || !newUser.password || !newUser.country || !newUser.city || !newUser.address) {
     return res.status(400).json({ error: 'I dati dell\'utente sono incompleti' });
   }
 
@@ -92,6 +87,12 @@ app.post('/add-user', (req, res) => {
     }
 
     const currentData = JSON.parse(data); // Converte il contenuto del file in oggetto JSON
+
+    // Verifica che l'utente non esista già
+    const existingUser = currentData.Users.find(u => u.username === newUser.username || u.email === newUser.email);
+    if (existingUser) {
+      return res.status(400).json({ error: 'Utente già esistente' });
+    }
 
     // Aggiungi il nuovo utente all'array Users
     currentData.Users.push(newUser);
