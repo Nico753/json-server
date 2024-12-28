@@ -76,12 +76,23 @@ app.post('/add-to-cart/:userId', (req, res) => {
 app.post('/add-user', (req, res) => {
   const newUser = req.body; // Ottieni i dati del nuovo utente dalla richiesta
 
+  // Verifica che i dati dell'utente siano completi
+  if (!newUser || !newUser.id || !newUser.name) {
+    return res.status(400).json({ error: 'I dati dell\'utente sono incompleti' });
+  }
+
   fs.readFile(jsonFilePath, 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'Errore nella lettura del file' });
     }
 
     const currentData = JSON.parse(data); // Converte il contenuto del file in oggetto JSON
+
+    // Verifica che l'utente non esista già
+    const existingUser = currentData.Users.find(u => u.id === newUser.id);
+    if (existingUser) {
+      return res.status(400).json({ error: 'Utente già esistente' });
+    }
 
     // Aggiungi il nuovo utente all'array Users
     currentData.Users.push(newUser);
@@ -91,13 +102,8 @@ app.post('/add-user', (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Errore nella scrittura del file' });
       }
-      res.status(200).json({ message: 'Nuovo utente aggiunto', newUser: newUser });
+      res.status(200).json({ message: 'Nuovo utente aggiunto', newUser });
     });
   });
 });
 
-// Avvia il server
-app.listen(PORT, () => {
-  console.log(`Server in esecuzione sulla porta ${PORT}`);
-  console.log(`Visita http://localhost:${PORT}/ per la home page`);
-});
